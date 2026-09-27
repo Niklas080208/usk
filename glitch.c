@@ -43,7 +43,7 @@ void init_trigger_pio() {
     pio_sm_config c = glitch_trigger_program_get_default_config(offset);
     sm_config_set_sideset_pins (&c, gli_pin());
     sm_config_set_out_shift(&c, false, true, 32);
-    
+
     pio_sm_set_consecutive_pindirs(pio1, G_TRIG_SM, gli_pin(), 1, true);
     pio_sm_init(pio1, G_TRIG_SM, offset, &c);
     pio_sm_set_enabled(pio1, G_TRIG_SM, true);
@@ -183,12 +183,12 @@ bool glitch_try_offset(int offset, int * width, int edge_limit) {
         else
             missing_count = 0;
         if (missing_count >= 5)
-            halt_with_error(4, 3); // something wrong with eMMC, cannot init properly
+            halt_with_error(0b100, 3); // something wrong with eMMC, cannot init properly
         if (*width == 1) {
-            halt_with_error(5, 3);
+            halt_with_error(0b101, 3);
         }
         if (*width >= 1000) {  // no reaction to the glitch, hardware failure or bad mosfet wire
-            halt_with_error(6, 3);
+            halt_with_error(0b110, 3);
         }
         if ((last_res == GLITCH_RESULT_TIMEOUT && gres == GLITCH_RESULT_FAILURE)
           || (gres == GLITCH_RESULT_TIMEOUT && last_res == GLITCH_RESULT_FAILURE)) {

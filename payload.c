@@ -393,7 +393,7 @@ bool init_op_cond() {
     simple_cmd_exec(MMC_GO_IDLE_STATE, 0);
     if (!simple_cmd_exec_with_ret(MMC_SEND_OP_COND, 0, &res))
         return false;
-    int retry = 100;
+    int retry = 150;
     while(--retry > 0) {
         if (!simple_cmd_exec_with_ret(MMC_SEND_OP_COND, SD_OCR_CCS | SD_OCR_VDD_18, &res))
             return false;
@@ -447,7 +447,7 @@ void reinit_mmc() {
     }
     if (!result)
     {
-        halt_with_error(8, 4);
+        halt_with_error(0b1000, 4);
     }
 }
 
@@ -484,9 +484,9 @@ void write_data(int block, const uint8_t * data, int size) {
         if (!was_success)
         {
             if (write_done)
-                halt_with_error(9, 4);
+                halt_with_error(0b1001, 4);
             else
-                halt_with_error(10, 4);
+                halt_with_error(0b1010, 4);
         }
     }
 }
@@ -526,7 +526,7 @@ bool update_firmware(uint32_t start_block, uint32_t size_blocks) {
     for (int b = start_block; b < start_block + size_blocks; b++)
     {
         if (!cmd_mmc_read(b) && !cmd_mmc_read(b)) {
-            halt_with_error(12, 4);
+            halt_with_error(0b1100, 4);
         }
         if (b == start_block)
         {
@@ -550,7 +550,7 @@ bool fast_check() {
     start_mmc();
     reinit_mmc();
     if (!cmd_mmc_read(1) && !cmd_mmc_read(1)) {
-        halt_with_error(11, 4);
+        halt_with_error(0b1011, 4);
     }
     if (*(uint32_t*)(data_buf + 0x20) == (mariko ? 0xA56CA203 : 0x69696969)) {
         is_space_bl = true;
@@ -633,11 +633,11 @@ void copy_bct(int start, int end) {
         }
         if (!was_success) {
             if (was_read && !was_write)
-                halt_with_error(13, 4);
+                halt_with_error(0b1101, 4);
             else if (was_write)
-                halt_with_error(14, 4);
+                halt_with_error(0b1110, 4);
             else
-                halt_with_error(15, 4);
+                halt_with_error(0b1111, 4);
         }
     }
 }

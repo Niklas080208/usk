@@ -23,7 +23,7 @@ bool wait_for_boot(int timeout_ms) {
     while(1) {
         if (time_reached(tio_full))
         {
-            halt_with_error(3, 3);
+            halt_with_error(0b011, 3);
             return false;
         }
         if (time_reached(tio_shrt))
@@ -31,15 +31,15 @@ bool wait_for_boot(int timeout_ms) {
             if (reset_attempts > 10)
             {
                 if (was_read_zero) {
-                    halt_with_error(1, 3);
+                    halt_with_error(0b001, 3);
                 }
                 else if (tio_shrt != tio_full) {
-                    halt_with_error(0, 3);
+                    halt_with_error(0b000, 3);
                 }
                 else if (was_cmd1) {
-                    halt_with_error(2, 3);
+                    halt_with_error(0b010, 3);
                 } else {
-                    halt_with_error(3, 3);
+                    halt_with_error(0b011, 3);
                 }
                 return false;
             }

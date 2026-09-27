@@ -68,15 +68,15 @@ void self_test()
     }
     if(!rst_ok)
     {
-        halt_with_error(0, 2);
+        halt_with_error(0b00, 2);
     }
     if(!cmd_ok)
     {
-        halt_with_error(1, 2);
+        halt_with_error(0b01, 2);
     }
     if(!d0_ok)
     {
-        halt_with_error(2, 2);
+        halt_with_error(0b10, 2);
     }
 }
 
@@ -104,7 +104,7 @@ int main()
     // check if this is the very first start
     if (watchdog_caused_reboot() && boot_try == 0)
 	{
-		halt_with_error(1, 1);
+		halt_with_error(0b1, 1);
 	}
     // is chip reset required
     bool force_button = detect_by_pull(1, 0, 1);
@@ -163,12 +163,12 @@ int main()
                 burn_fuse();
             }
             add_boot_record(offset);
-            halt_with_error(0, 1);
+            halt_with_error(0b0, 1);
         }
         if (full_try == 0) {
             rewrite_payload();
         }
     }
     // attempts limit
-    halt_with_error(7, 3);
+    halt_with_error(0b111, 3);
 }

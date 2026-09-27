@@ -1,12 +1,12 @@
-#define PIX_blu 0x00003F
-#define PIX_yel 0x151500
-#define PIX_whi 0x111111
+#define PIX_blu 0x0000A6
+#define PIX_yel 0x383800
+#define PIX_whi 0x2D2D2D
 
-#define PIX_b 0x00000F
+#define PIX_b   0x000011
 
 void put_pixel(uint32_t pixel_grb);
 
-void halt_with_error(uint32_t err, uint32_t bits);
+void halt_with_error(uint32_t pause, uint32_t blinks);
 
 void gpio_disable_input_output(int pin);
 
