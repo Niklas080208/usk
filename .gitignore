@@ -1,0 +1,14 @@
+# Build output
+/build/
+/out/
+
+# Pico SDK / CMake artifacts (if built outside /build)
+*.elf
+*.elf.map
+*.bin
+*.uf2
+*.dis
+*.hex
+
+# macOS
+.DS_Store
