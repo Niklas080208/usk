@@ -20,11 +20,16 @@ jobs:
           docker run --rm -v "$PWD/out:/export" usk
           ls -la out/
 
-      - name: Upload out artifacts
+      - name: Upload firmware.uf2
         uses: actions/upload-artifact@v4
         with:
-          name: out
-          path: |
-            out/firmware.uf2
-            out/update.bin
+          name: firmware.uf2
+          path: out/firmware.uf2
+          if-no-files-found: error
+
+      - name: Upload update.bin
+        uses: actions/upload-artifact@v4
+        with:
+          name: update.bin
+          path: out/update.bin
           if-no-files-found: error
