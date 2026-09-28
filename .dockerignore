@@ -1,0 +1,10 @@
+build/
+out/
+.git/
+.github/
+.DS_Store
+*.elf
+*.elf.map
+*.uf2
+*.dis
+*.hex
